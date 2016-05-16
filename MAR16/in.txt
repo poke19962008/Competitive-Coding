@@ -1,0 +1,17 @@
+16
+xabcabc
+axbcabc
+abxcabc
+abcxabc
+xybcabc
+xaycabc
+xabyabc
+yxbcabc
+axycabc
+axbyabc
+ybxcabc
+ayxcabc
+abxyabc
+ybcxabc
+aycxabc
+abyxabc

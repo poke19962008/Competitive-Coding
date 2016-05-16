@@ -1,0 +1,16 @@
+15
+abcabc
+abcacx
+axcabc
+xbcabc
+abcxbc
+abcaxc
+xxcabc
+xbxabc
+abcxxc
+abcxbx
+abcaxx
+xxxabc
+abcxxx
+aa
+ab
