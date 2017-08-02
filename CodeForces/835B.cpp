@@ -42,10 +42,24 @@ typedef vector<pll> vpll;
 
 int main(){
   ioS;
+  string n;
+  long k, freq[10]={0}, sum=0, ans=0;
 
-  // #ifndef ONLINE_JUDGE
-  //   freopen("test.txt", "r", stdin);
-  // #endif
+  cin>>k;
+  cin>>n;
+  REP(i, n.size()) {
+    sum += n[i]-'0';
+    freq[ n[i]-'0' ]++;
+  }
+
+  REP(i, 10) {
+    FOR(j, 0, freq[i], 1) {
+      // debug(i);
+      if( sum < k ) { ans++; sum += 9-i;  }
+    }
+  }
+
+  cout<<ans;
 
   return 0;
 }

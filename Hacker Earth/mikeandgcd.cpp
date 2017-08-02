@@ -43,9 +43,21 @@ typedef vector<pll> vpll;
 int main(){
   ioS;
 
-  // #ifndef ONLINE_JUDGE
-  //   freopen("test.txt", "r", stdin);
-  // #endif
+  int n, arr[MAXN];
+  vi ans;
+  cin>>n;
+
+  REP(i, n) cin>>arr[i];
+
+  REP(i, n-1) {
+    bool found = false;
+    FOR(j, i+1, n, 1) {
+      if(__gcd(arr[i], arr[j]) > 1) { ans.pb(j); found = true; break; }
+    }
+    if(!found) ans.pb(-1);
+  }
+
+  REP(i, ans.size()) cout<<ans[i]<<" ";
 
   return 0;
 }

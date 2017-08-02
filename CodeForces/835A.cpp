@@ -42,10 +42,14 @@ typedef vector<pll> vpll;
 
 int main(){
   ioS;
+  long s, v1, t1, v2, t2;
+  cin>>s>>v1>>v2>>t1>>t2;
 
-  // #ifndef ONLINE_JUDGE
-  //   freopen("test.txt", "r", stdin);
-  // #endif
+  long long tTime1 = v1*s + 2*t1;
+  long long tTime2 = v2*s + 2*t2;
 
+  if(tTime1 < tTime2) cout<<"First";
+  else if(tTime1 > tTime2) cout<<"Second";
+  else cout<<"Friendship";
   return 0;
 }

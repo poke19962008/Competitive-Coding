@@ -39,13 +39,29 @@ typedef pair<ll,ll> pll;
 typedef vector<pii> vpii;
 typedef vector<pll> vpll;
 
-
+int prime(ll a){
+    for(ll i=2;i<=sqrt(a);i++)
+        if(a%i==0) return 0;
+    return 1;
+}
 int main(){
-  ioS;
+    ll a;
+    cin>>a;
+    int c=0,d=0;
+    ll i;
 
-  // #ifndef ONLINE_JUDGE
-  //   freopen("test.txt", "r", stdin);
-  // #endif
+    if(a<2) { cout<<2-a; return 0; }
 
-  return 0;
+    for(i=a;1;i++)
+    {
+        if(prime(i)) break;
+        c++;
+    }
+    for(i=a-1;i>0;i--){
+        if(prime(i)) break;
+        d++;
+    }
+    if(i<=0) d=INF;
+    printf("%d",min(c,d));
+    return 0;
 }

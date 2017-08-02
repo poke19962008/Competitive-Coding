@@ -15,7 +15,7 @@ using namespace std;
 #define EPS 1e-9
 #define INF (int)1e9
 #define MOD 1000000007
-#define MAXN 1000006
+#define MAXN 1000000
 
 #define ioS ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
 #define debug(x) cout<<#x<<"="<<x<<"\n";
@@ -42,10 +42,23 @@ typedef vector<pll> vpll;
 
 int main(){
   ioS;
+  map<ll, ll> mp;
+  ll prime[MAXN+1] = {0};
 
-  // #ifndef ONLINE_JUDGE
-  //   freopen("test.txt", "r", stdin);
-  // #endif
+  for(int i=2; i*i<=MAXN; i++){
+    if(!prime[i])
+      for(int j=i; j<=MAXN; j += i){
+        if(!prime[j]) { prime[j] = i; mp[i] ++; }
+      }
+  }
+
+  int q;
+  cin>>q;
+  while(q--) {
+    ll x;
+    cin>>x;
+    cout<<( (mp[x])? mp[x]:1 )<<endl;
+  }
 
   return 0;
 }
