@@ -39,10 +39,13 @@ typedef pair<ll,ll> pll;
 typedef vector<pii> vpii;
 typedef vector<pll> vpll;
 
-ll dist(int a, int b, int c) {
-  return abs(a-b) + abs(b-c);
+vi check(string s, string t, int ind) {
+  vi ans;
+  REP(i, s.size()){
+    if(s[i] != t[i]) { ans.pb(i); }
+  }
+  return ans;
 }
-
 
 int main(){
   ioS;
@@ -51,25 +54,23 @@ int main(){
     freopen("in.txt", "r", stdin);
   #endif
 
-  int n, k, a[MAXN], b[MAXN];
-  ll ans = INF, p;
-  cin>>n>>k>>p;
-  REP(i, n) cin>>a[i];
-  REP(i, k) cin>>b[i];
+  int n, m;
+  string s, t;
+  cin>>n>>m;
+  cin>>s>>t;
 
-  sort(a, a+n);
-  sort(b, b+k);
+  vi ans; bool ok = false;
+  REP(i, m-n+1) {
+    string sub = t.substr(i, n);
+    vi ans_ = check(s, sub, i);
 
-  REP(i, k-n+1) {
-    ll ans_ = -INF;
-    REP(j, n) {
-      ll tot = dist(a[j], b[j+i], p);
-      ans_ = max(ans_, tot);
-    }
-    ans = min(ans, ans_);
-    // debug(ans_);
+    if(ans.empty() && !ok) {ans = ans_; ok = true;}
+    else ans = (ans.size() <= ans_.size())? ans: ans_;
   }
-  cout<<ans;
+
+  cout<<ans.size()<<endl;
+  REP(i, ans.size()) cout<<ans[i]+1<<" ";
+
 
   return 0;
 }

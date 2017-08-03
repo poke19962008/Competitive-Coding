@@ -39,11 +39,6 @@ typedef pair<ll,ll> pll;
 typedef vector<pii> vpii;
 typedef vector<pll> vpll;
 
-ll dist(int a, int b, int c) {
-  return abs(a-b) + abs(b-c);
-}
-
-
 int main(){
   ioS;
 
@@ -51,24 +46,23 @@ int main(){
     freopen("in.txt", "r", stdin);
   #endif
 
-  int n, k, a[MAXN], b[MAXN];
-  ll ans = INF, p;
-  cin>>n>>k>>p;
-  REP(i, n) cin>>a[i];
-  REP(i, k) cin>>b[i];
+  int n, k, arr[MAXN];
+  cin>>n>>k;
+  REP(i, n) cin>>arr[i];
 
-  sort(a, a+n);
-  sort(b, b+k);
+  sort(arr, arr+n);
 
-  REP(i, k-n+1) {
-    ll ans_ = -INF;
-    REP(j, n) {
-      ll tot = dist(a[j], b[j+i], p);
-      ans_ = max(ans_, tot);
+  int ans = 0;
+  int d = 2*k;
+  REP(i, n) {
+    while(d<arr[i]) {
+      ans++;
+      d <<= 1;
     }
-    ans = min(ans, ans_);
-    // debug(ans_);
+    d = max(d, 2*arr[i]);
+
   }
+
   cout<<ans;
 
   return 0;

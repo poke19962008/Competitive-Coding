@@ -1,19 +1,19 @@
+#include <algorithm>
 #include <iostream>
 #include <stdio.h>
-#include <math.h>
 #include <stdio.h>
+#include <math.h>
 #include <string>
 #include <vector>
-#include <algorithm>
+#include <stack>
 #include <queue>
 #include <list>
-#include <stack>
 #include <map>
 #include <set>
 using namespace std;
 
 #define EPS 1e-9
-#define INF (int)1e9
+#define INF 1e15+9
 #define MOD 1000000007
 #define MAXN 1000006
 
@@ -38,7 +38,6 @@ typedef pair<int,int> pii;
 typedef pair<ll,ll> pll;
 typedef vector<pii> vpii;
 typedef vector<pll> vpll;
-
 
 int main(){
   ioS;

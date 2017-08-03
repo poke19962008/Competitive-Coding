@@ -39,10 +39,32 @@ typedef pair<ll,ll> pll;
 typedef vector<pii> vpii;
 typedef vector<pll> vpll;
 
-ll dist(int a, int b, int c) {
-  return abs(a-b) + abs(b-c);
-}
+bool check(string str[], int p, int q) {
+  str[p][q] = 'X';
+  // debug(str[p]);
 
+  REP(i, 10) {
+    if(str[p][i] == 'X') {
+      int count=0;
+      while(str[p][i++] == 'X') count++;
+      if(count >= 5)  {str[p][q] = '.'; return true;}
+      --i;
+    }
+  }
+
+  REP(i, 6) {
+    REP(j, 6) {
+      if(str[i][j]=='X' &&
+         str[i+1][j+1]=='X' &&
+         str[i+2][j+2]=='X' &&
+         str[i+3][j+3]=='X' &&
+         str[i+4][j+4]=='X') {str[p][q] = '.';return true;}
+    }
+  }
+
+  str[p][q] = '.';
+  return false;
+}
 
 int main(){
   ioS;
@@ -51,25 +73,28 @@ int main(){
     freopen("in.txt", "r", stdin);
   #endif
 
-  int n, k, a[MAXN], b[MAXN];
-  ll ans = INF, p;
-  cin>>n>>k>>p;
-  REP(i, n) cin>>a[i];
-  REP(i, k) cin>>b[i];
+  string str[10];
+  string str_[10];
 
-  sort(a, a+n);
-  sort(b, b+k);
+  REP(i, 10) cin>>str[i];
 
-  REP(i, k-n+1) {
-    ll ans_ = -INF;
-    REP(j, n) {
-      ll tot = dist(a[j], b[j+i], p);
-      ans_ = max(ans_, tot);
-    }
-    ans = min(ans, ans_);
-    // debug(ans_);
+  int k=0;
+  REP(i, 10){
+    RREP(j, 9) str_[k].pb(str[j][i]);
+    k++;
   }
-  cout<<ans;
+
+
+  REP(i, 10)
+    REP(j, 10)
+      if(str[i][j] == '.' && check(str, i, j)) {cout<<"YES"; return 0; }
+
+
+  REP(i, 10)
+    REP(j, 10)
+      if(str_[i][j] == '.' && check(str_, i, j)) {cout<<"YES"; return 0; }
+
+  cout<<"NO";
 
   return 0;
 }

@@ -39,37 +39,32 @@ typedef pair<ll,ll> pll;
 typedef vector<pii> vpii;
 typedef vector<pll> vpll;
 
-ll dist(int a, int b, int c) {
-  return abs(a-b) + abs(b-c);
-}
-
-
 int main(){
-  ioS;
+  //ioS;
 
   #ifndef ONLINE_JUDGE
     freopen("in.txt", "r", stdin);
   #endif
 
-  int n, k, a[MAXN], b[MAXN];
-  ll ans = INF, p;
-  cin>>n>>k>>p;
-  REP(i, n) cin>>a[i];
-  REP(i, k) cin>>b[i];
+  int n;
+  string str;
+  cin>>n;
+  cin.ignore();
+  getline(cin, str);
 
-  sort(a, a+n);
-  sort(b, b+k);
-
-  REP(i, k-n+1) {
-    ll ans_ = -INF;
-    REP(j, n) {
-      ll tot = dist(a[j], b[j+i], p);
-      ans_ = max(ans_, tot);
+  int ans = 0;
+  int loc = 0;
+    REP(i, str.size()) {
+    char ch = str[i];
+    if(ch == ' ') {
+      ans = max(ans, loc);
+      loc = 0;
+    }else {
+      if(ch >= 'A' && ch <= 'Z') loc++;
     }
-    ans = min(ans, ans_);
-    // debug(ans_);
   }
-  cout<<ans;
+
+  cout<<max(ans, loc);
 
   return 0;
 }
