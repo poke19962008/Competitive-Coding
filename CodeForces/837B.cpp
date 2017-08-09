@@ -52,33 +52,42 @@ int part(vs str, int l, int r, int t, int b) {
 }
 
 bool comb1(vs str, int m, int n) {
-  if(n%2 == 0 && n%2 ==0 ){
+
     int a, b, c;
-    // #1
-    a = part(str, 0, n/2, 0, m);
-    b = part(str, n/2, n, 0, m/2);
-    c = part(str, n/2, n, m/2, m);
-    if(a+b+c == 'R'+'G'+'B') return true;
 
-    // #2
-    a = part(str, 0, n, 0, m/2);
-    b = part(str, 0, n/2, m/2, m);
-    c = part(str, n/2, n, m/2, m);
-    if(a+b+c == 'R'+'G'+'B') return true;
+    if(m%2==0)
+    FOR(i, 1, n, 1) {
+      // #1
+      a = part(str, 0, i, 0, m);
+      b = part(str, i, n, 0, m/2);
+      c = part(str, i, n, m/2, m);
+      if(a+b+c == 'R'+'G'+'B') return true;
 
-    // #3
-    a = part(str, 0, n/2, 0, m/2);
-    b = part(str, 0, n/2, m/2, m);
-    c = part(str, n/2, n, 0, m);
-    if(a+b+c == 'R'+'G'+'B') return true;
+      // #3
+      a = part(str, 0, i, 0, m/2);
+      b = part(str, 0, i, m/2, m);
+      c = part(str, i, n, 0, m);
+      if(a+b+c == 'R'+'G'+'B') return true;
+    }
 
-    // #4
-    a = part(str, 0, n/2, 0, m/2);
-    b = part(str, n/2, n, 0, m/2);
-    c = part(str, n/2, n, m/2, m);
-    if(a+b+c == 'R'+'G'+'B') return true;
+    if(n%2 == 0)
+    FOR(i, 1, m, 1) {
+      // #2
+      a = part(str, 0, n, 0, i);
+      b = part(str, 0, n/2, i, m);
+      c = part(str, n/2, n, i, m);
+      if(a+b+c == 'R'+'G'+'B') return true;
 
-  }
+
+
+      // #4
+      a = part(str, 0, n/2, 0, i);
+      b = part(str, n/2, n, 0, i);
+      c = part(str, n/2, n, i, m);
+      if(a+b+c == 'R'+'G'+'B') return true;
+    }
+
+
   return false;
 }
 
@@ -92,7 +101,8 @@ bool comb2(vs str, int m, int n) {
     c = part(str, 0, n, 2*m/3, m);
     if(a+b+c == 'R'+'G'+'B') return true;
 
-  } else if(n%3 == 0) {
+  }
+  if(n%3 == 0) {
 
     a = part(str, 0, n/3, 0, m);
     b = part(str, n/3, 2*n/3, 0, m);
@@ -123,7 +133,7 @@ int main(){
   }
 
 
-  if(comb1(str, n, m)) {cout<<"YES"; return 0; }
+  //if(comb1(str, n, m)) {cout<<"YES"; return 0; }
   if(comb2(str, n, m)) {cout<<"YES"; return 0; }
   cout<<"NO";
 

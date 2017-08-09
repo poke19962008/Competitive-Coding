@@ -45,9 +45,43 @@ int fastinput(){int t=0;char c;c=getchar_unlocked();while(c<'0' || c>'9')c=getch
 int main(){
   ioS;
 
-  // #ifndef ONLINE_JUDGE
-  //   freopen("test.txt", "r", stdin);
-  // #endif
+  #ifndef ONLINE_JUDGE
+    freopen("in.txt", "r", stdin);
+  #endif
+  int t;
+  cin>>t;
 
+  while(t--) {
+    int hashA[26], hashB[26], len;
+    string a, b;
+
+    cin>>a;
+    cin>>b;
+    len = a.size();
+
+    REP(i, 26){ hashA[i] = 0; hashB[i] = 0; }
+
+    REP(i, len) hashA[ a[i]-'a' ]++;
+    REP(i, len) hashB[ b[i]-'a' ]++;
+
+    int count1=0, count2=0;
+    REP(i, 26)
+      if(!hashA[i] && hashB[i]) count1+=hashB[i];
+      else if(hashA[i] && !hashB[i]) count2+=hashA[i];
+
+    bool breakA=false;
+    if(count2 == 1 && count1 == 0) cout<<"A\n";
+    else if((count1 == 0 && count2 == 0) || (count1 == 1 && count2 == 0)) cout<<"B\n";
+    else if(count1 == len && count2 == len) {
+      REP(i, 26 && !breakA) if(hashA[i]>1) breakA=true;
+      cout<<((breakA)?"A":"B")<<endl;
+    }else {
+      REP(i, 26 && !breakA) {
+        if(hashA[i] && hashB[i]) continue;
+        if(hashA[i] > 1) {breakA=true;}
+      }
+      cout<<((breakA)?"A":"B")<<endl;
+    }
+  }
   return 0;
 }

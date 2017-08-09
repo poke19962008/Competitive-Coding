@@ -30,7 +30,7 @@ using namespace std;
 #define RREP(i, j) RFOR(i, j, 0, 1)
 
 typedef unsigned long long int ul;
-typedef long long int ll;
+typedef long long ll;
 typedef long int l;
 typedef vector<int> vi;
 typedef vector<string> vs;
@@ -45,9 +45,40 @@ int fastinput(){int t=0;char c;c=getchar_unlocked();while(c<'0' || c>'9')c=getch
 int main(){
   ioS;
 
-  // #ifndef ONLINE_JUDGE
-  //   freopen("test.txt", "r", stdin);
-  // #endif
+  #ifndef ONLINE_JUDGE
+    freopen("in.txt", "r", stdin);
+  #endif
+
+  int t;
+  cin>>t;
+
+  while(t--) {
+    ll n, d, arr[MAXN];
+    ll ans=0;
+    ll ele = 0, sum=0;
+
+    cin>>n>>d;
+    REP(i, n) {cin>>arr[i]; ele += arr[i]; }
+    if(ele%n != 0) {cout<<"-1\n";continue;}
+    ele = (ll)ele/n;
+
+    bool break_ = false;
+    REP(i, n-d ) {
+      ll diff = abs(ele-arr[i]);
+
+      if(arr[i] == ele) continue;
+      if(arr[i] < ele) arr[i+d] -= diff;
+      else arr[i+d] += diff;
+      ans += diff;
+      arr[i] = ele;
+    }
+
+    REP(i, n && !break_) if(arr[i] != ele) break_ = true;
+    if(break_) cout<<"-1"<<endl;
+    else cout<<ans<<endl;
+
+
+  }
 
   return 0;
 }

@@ -42,12 +42,40 @@ typedef vector<pll> vpll;
 
 int fastinput(){int t=0;char c;c=getchar_unlocked();while(c<'0' || c>'9')c=getchar_unlocked();while(c>='0' && c<='9'){t=(t<<3)+(t<<1)+c-'0';c=getchar_unlocked();}return t;}
 
+bool cmp(pii a, pii b) {
+    if(a.first != b.first) return a.first > b.first;
+    else return a.second > b.second;
+}
+
 int main(){
   ioS;
 
-  // #ifndef ONLINE_JUDGE
-  //   freopen("test.txt", "r", stdin);
-  // #endif
+  #ifndef ONLINE_JUDGE
+    freopen("in.txt", "r", stdin);
+  #endif
+
+  int adj[1003][1003] = {0}, val[1003];
+  int n, m, k;
+  cin>>n>>m>>k;
+
+  REP(i, n) cin>>val[i];
+  REP(i, m) {
+      int x, y;
+      cin>>x>>y;
+      adj[x-1][y-1] = 1;
+      adj[y-1][x-1] = 1;
+  }
+
+
+  REP(i, n) {
+      vpii v;
+      REP(j, n) if(adj[i][j]) v.pb( make_pair(val[j], j+1) );
+      sort(v.begin(), v.end(), cmp);
+      // debug(v.size());
+      if(v.size() < k)cout<<"-1\n";
+      else cout<<v[k-1].second<<endl;
+      // debug_(v[k-1].second, v[k-1].first);
+  }
 
   return 0;
 }

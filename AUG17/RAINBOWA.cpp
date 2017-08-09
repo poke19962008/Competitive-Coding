@@ -45,9 +45,29 @@ int fastinput(){int t=0;char c;c=getchar_unlocked();while(c<'0' || c>'9')c=getch
 int main(){
   ioS;
 
-  // #ifndef ONLINE_JUDGE
-  //   freopen("test.txt", "r", stdin);
-  // #endif
+  #ifndef ONLINE_JUDGE
+    freopen("in.txt", "r", stdin);
+  #endif
+
+  int t;
+  cin>>t;
+  while(t--) {
+    int n;
+    int arr[MAXN], hash[8];
+
+    REP(i, 8) hash[i] = 0;
+    cin>>n;
+    REP(i, n) cin>>arr[i];
+
+    bool break_ = false;
+    for(int i=0, j=n-1; i<=j && !break_; i++, j--) {
+      if((arr[i] != arr[j]) || (arr[i]<1 || arr[i]>7)) break_=true;
+      else hash[arr[i]]++;
+    }
+
+    FOR(i, 1, 8 && !break_, 1) if(!hash[i]) break_=true;
+    cout<<((break_)?"no\n":"yes\n");
+  }
 
   return 0;
 }
