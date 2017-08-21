@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <iostream>
 #include <stdio.h>
-#include <stdio.h>
 #include <math.h>
 #include <string>
 #include <vector>
@@ -10,7 +9,6 @@
 #include <list>
 #include <map>
 #include <set>
-#include <unistd.h>
 using namespace std;
 
 #define EPS 1e-9
@@ -21,6 +19,9 @@ using namespace std;
 #define ioS ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
 #define debug(x) cout<<#x<<"="<<x<<"\n";
 #define debug_(x,y) cout<<#x<<"="<<x<<" and "<<#y<<"="<<y<<"\n";
+
+int max(int a, int b) { return ((a>b)?a:b); }
+int min(int a, int b) { return ((a<b)?a:b); }
 
 #define pb push_back
 #define mp make_pair
@@ -41,57 +42,45 @@ typedef pair<ll,ll> pll;
 typedef vector<pii> vpii;
 typedef vector<pll> vpll;
 
-int fastinput(){int t=0;char c;c=getchar_unlocked();while(c<'0' || c>'9')c=getchar_unlocked();while(c>='0' && c<='9'){t=(t<<3)+(t<<1)+c-'0';c=getchar_unlocked();}return t;}
-ll glo;
-void display(vl v) {
-  REP(i, v.size()) cout<<v[i]<<' ';
-  cout<<endl;
-}
+// int fastinput(){int t=0;char c;c=getchar_unlocked();while(c<'0' || c>'9')c=getchar_unlocked();while(c>='0' && c<='9'){t=(t<<3)+(t<<1)+c-'0';c=getchar_unlocked();}return t;}
 
-ll f(vl v, ll p) {
-  // display(v);
-  // usleep(10000);
-  ll sum = 0;
-  bool break_ = false;
-  for(; p<v.size()-1 && !break_; p++) {
-    if(p+2 == v.size()) {v.pb(0); break_ = true; }
-    ll tmp = v[p], tmp_ = v[p+1], tmp__ = v[p+2];
+int f(vi v, int start, int k) {
+  if(k <= 0) return 0;
+  if(start >= v.size()-1) return 0;
 
-    ll T = min(v[p], v[p+1]);
-    while(T--) {
-      v[p]--; v[p+1]--; v[p+2]++;
-      sum = (sum%MOD + (1+f(v, p+1))%MOD )%MOD;
-    }
-    v[p] = tmp;
-    v[p+1] = tmp_;
-    v[p+2] = tmp__;
+  int profMax = 0;
+  FOR(i, start+1, v.size(), 1 ) {
+    int prof = v[i] - v[start];
+    if(prof < 0) prof = 0;
+    profMax = max(profMax, prof + f(v, i+1, k-1));
   }
 
-  return sum;
+  return max(profMax, f(v, start+1, k));
 }
 
 int main(){
   ioS;
 
-  #ifndef ONLINE_JUDGE
-    freopen("in.txt", "r", stdin);
-  #endif
+  // #ifndef ONLINE_JUDGE
+  //   freopen("in.txt", "r", stdin);
+  // #endif
 
-  int t;
-  cin>>t;
-  while(t--) {
-    int n;
-    vl v;
+  int q;
+  vi v;
+  cin>>q;
 
+  while(q--) {
+    int n, k;
+
+    cin>>k;
     cin>>n;
-    glo = n;
+    v.clear();
     REP(i, n) {
-      int x;
-      cin>>x;
+      int x; cin>>x;
       v.pb(x);
     }
 
-    cout<<f(v, 0)+1<<endl;
+    cout<<f(v, 0, k)<<endl;
   }
 
   return 0;

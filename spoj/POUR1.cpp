@@ -10,7 +10,6 @@
 #include <list>
 #include <map>
 #include <set>
-#include <unistd.h>
 using namespace std;
 
 #define EPS 1e-9
@@ -41,33 +40,38 @@ typedef pair<ll,ll> pll;
 typedef vector<pii> vpii;
 typedef vector<pll> vpll;
 
-int fastinput(){int t=0;char c;c=getchar_unlocked();while(c<'0' || c>'9')c=getchar_unlocked();while(c>='0' && c<='9'){t=(t<<3)+(t<<1)+c-'0';c=getchar_unlocked();}return t;}
-ll glo;
-void display(vl v) {
-  REP(i, v.size()) cout<<v[i]<<' ';
-  cout<<endl;
+//int fastinput(){int t=0;char c;c=getchar_unlocked();while(c<'0' || c>'9')c=getchar_unlocked();while(c>='0' && c<='9'){t=(t<<3)+(t<<1)+c-'0';c=getchar_unlocked();}return t;}
+
+int solve(int a, int b, int c) {
+  int a_=a, b_=0;
+  int move=1;
+
+  while(a_!=c || b_!=c) {
+    int cont = min(a_, b-b_);
+    a_-=cont;
+    b_+=cont;
+
+    move++;
+
+    if(a_==c || b_==c) return move;
+
+    if(a_ == 0) {
+      a_ = a;
+      move++;
+    }
+
+    if(b_ == b) {
+      b_ = 0;
+      move++;
+    }
+  }
 }
 
-ll f(vl v, ll p) {
-  // display(v);
-  // usleep(10000);
-  ll sum = 0;
-  bool break_ = false;
-  for(; p<v.size()-1 && !break_; p++) {
-    if(p+2 == v.size()) {v.pb(0); break_ = true; }
-    ll tmp = v[p], tmp_ = v[p+1], tmp__ = v[p+2];
-
-    ll T = min(v[p], v[p+1]);
-    while(T--) {
-      v[p]--; v[p+1]--; v[p+2]++;
-      sum = (sum%MOD + (1+f(v, p+1))%MOD )%MOD;
-    }
-    v[p] = tmp;
-    v[p+1] = tmp_;
-    v[p+2] = tmp__;
-  }
-
-  return sum;
+int gcd(int a, int b) {
+  if(a==0 || b==0) return 0;
+  if(a==b) return a;
+  if(a>b) return gcd(a-b, b);
+  return gcd(a, b-a);
 }
 
 int main(){
@@ -79,19 +83,13 @@ int main(){
 
   int t;
   cin>>t;
+
   while(t--) {
-    int n;
-    vl v;
-
-    cin>>n;
-    glo = n;
-    REP(i, n) {
-      int x;
-      cin>>x;
-      v.pb(x);
-    }
-
-    cout<<f(v, 0)+1<<endl;
+    int a, b, c;
+    cin>>a>>b>>c;
+    if(c>a && c>b) cout<<"-1\n";
+    else if(c%gcd(a, b) != 0) cout<<"-1\n";
+    else cout<<min(solve(a, b, c), solve(b, a, c))<<endl;
   }
 
   return 0;

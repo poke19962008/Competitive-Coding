@@ -10,7 +10,6 @@
 #include <list>
 #include <map>
 #include <set>
-#include <unistd.h>
 using namespace std;
 
 #define EPS 1e-9
@@ -41,34 +40,7 @@ typedef pair<ll,ll> pll;
 typedef vector<pii> vpii;
 typedef vector<pll> vpll;
 
-int fastinput(){int t=0;char c;c=getchar_unlocked();while(c<'0' || c>'9')c=getchar_unlocked();while(c>='0' && c<='9'){t=(t<<3)+(t<<1)+c-'0';c=getchar_unlocked();}return t;}
-ll glo;
-void display(vl v) {
-  REP(i, v.size()) cout<<v[i]<<' ';
-  cout<<endl;
-}
-
-ll f(vl v, ll p) {
-  // display(v);
-  // usleep(10000);
-  ll sum = 0;
-  bool break_ = false;
-  for(; p<v.size()-1 && !break_; p++) {
-    if(p+2 == v.size()) {v.pb(0); break_ = true; }
-    ll tmp = v[p], tmp_ = v[p+1], tmp__ = v[p+2];
-
-    ll T = min(v[p], v[p+1]);
-    while(T--) {
-      v[p]--; v[p+1]--; v[p+2]++;
-      sum = (sum%MOD + (1+f(v, p+1))%MOD )%MOD;
-    }
-    v[p] = tmp;
-    v[p+1] = tmp_;
-    v[p+2] = tmp__;
-  }
-
-  return sum;
-}
+//int fastinput(){int t=0;char c;c=getchar_unlocked();while(c<'0' || c>'9')c=getchar_unlocked();while(c>='0' && c<='9'){t=(t<<3)+(t<<1)+c-'0';c=getchar_unlocked();}return t;}
 
 int main(){
   ioS;
@@ -77,21 +49,31 @@ int main(){
     freopen("in.txt", "r", stdin);
   #endif
 
-  int t;
-  cin>>t;
-  while(t--) {
-    int n;
-    vl v;
+  int n, q, c;
+  cin>>n>>q>>c;
 
-    cin>>n;
-    glo = n;
-    REP(i, n) {
-      int x;
-      cin>>x;
-      v.pb(x);
+  ll dp[11][101][101];
+  REP(i, 11) REP(j, 101) REP(k, 101) dp[i][j][k]=0;
+  while(n--) {
+    int x, y, s;
+    cin>>x>>y>>s;
+    ++dp[s][x][y];
+  }
+
+  REP(s, 11)
+    FOR(x, 1, 101, 1)
+      FOR(y, 1, 101, 1)
+        dp[s][x][y] += (dp[s][x-1][y] + dp[s][x][y-1] - dp[s][x-1][y-1]);
+
+  while(q--) {
+    int x, y, x_, y_, t, sum=0;
+    cin>>t>>x>>y>>x_>>y_;
+
+    REP(s, 11) {
+      int bright = (s+t)%(c+1);
+      sum += bright*(dp[s][x_][y_] - dp[s][x-1][y_] - dp[s][x_][y-1] + dp[s][x-1][y-1]);
     }
-
-    cout<<f(v, 0)+1<<endl;
+    cout<<sum<<endl;
   }
 
   return 0;

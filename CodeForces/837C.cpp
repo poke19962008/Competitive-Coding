@@ -10,7 +10,6 @@
 #include <list>
 #include <map>
 #include <set>
-#include <unistd.h>
 using namespace std;
 
 #define EPS 1e-9
@@ -41,34 +40,32 @@ typedef pair<ll,ll> pll;
 typedef vector<pii> vpii;
 typedef vector<pll> vpll;
 
-int fastinput(){int t=0;char c;c=getchar_unlocked();while(c<'0' || c>'9')c=getchar_unlocked();while(c>='0' && c<='9'){t=(t<<3)+(t<<1)+c-'0';c=getchar_unlocked();}return t;}
-ll glo;
-void display(vl v) {
-  REP(i, v.size()) cout<<v[i]<<' ';
-  cout<<endl;
+// int fastinput(){int t=0;char c;c=getchar_unlocked();while(c<'0' || c>'9')c=getchar_unlocked();while(c>='0' && c<='9'){t=(t<<3)+(t<<1)+c-'0';c=getchar_unlocked();}return t;}
+
+struct cord {
+  int x, y;
+};
+int n, a, b;
+
+int max(int a, int b) { return ((a<b)?b:a); }
+
+int fit(int x1, int y1, int x2, int y2) {
+  // cout<<x1<<" "<<y1<<" "<<x2<<" "<<y2<<endl;
+  if( (x1+x2<=a && max(y1, y2)<=b) || (max(x1, x2)<=a && y1+y2<=b) )
+    return x1*y1 + x2*y2;
+  return 0;
 }
 
-ll f(vl v, ll p) {
-  // display(v);
-  // usleep(10000);
-  ll sum = 0;
-  bool break_ = false;
-  for(; p<v.size()-1 && !break_; p++) {
-    if(p+2 == v.size()) {v.pb(0); break_ = true; }
-    ll tmp = v[p], tmp_ = v[p+1], tmp__ = v[p+2];
+int f(cord x, cord y) {
+  int comb1 = fit(x.x, x.y, y.x, y.y);
+  int comb2 = fit(x.y, x.x, y.x, y.y);
+  int comb3 = fit(x.x, x.y, y.y, y.x);
+  int comb4 = fit(x.y, x.x, y.y, y.x);
 
-    ll T = min(v[p], v[p+1]);
-    while(T--) {
-      v[p]--; v[p+1]--; v[p+2]++;
-      sum = (sum%MOD + (1+f(v, p+1))%MOD )%MOD;
-    }
-    v[p] = tmp;
-    v[p+1] = tmp_;
-    v[p+2] = tmp__;
-  }
-
-  return sum;
+  // cout<<comb1<<" "<<comb2<<" "<<comb3<<" "<<comb4<<endl;
+  return max( comb1, max(comb2, max(comb3, comb4)));
 }
+
 
 int main(){
   ioS;
@@ -77,22 +74,20 @@ int main(){
     freopen("in.txt", "r", stdin);
   #endif
 
-  int t;
-  cin>>t;
-  while(t--) {
-    int n;
-    vl v;
+  cord arr[300];
+  cin>>n>>a>>b;
 
-    cin>>n;
-    glo = n;
-    REP(i, n) {
-      int x;
-      cin>>x;
-      v.pb(x);
+  REP(i, n) { cin>>arr[i].x; cin>>arr[i].y; }
+
+  int ans = 0;
+  REP(i, n) {
+    FOR(j, i+1, n, 1){
+      ans = max(ans, f(arr[i], arr[j]));
+      // debug(f(arr[i], arr[j]));
     }
-
-    cout<<f(v, 0)+1<<endl;
   }
+
+  cout<<ans;
 
   return 0;
 }

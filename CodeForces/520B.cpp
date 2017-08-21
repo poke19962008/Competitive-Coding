@@ -10,7 +10,6 @@
 #include <list>
 #include <map>
 #include <set>
-#include <unistd.h>
 using namespace std;
 
 #define EPS 1e-9
@@ -41,58 +40,43 @@ typedef pair<ll,ll> pll;
 typedef vector<pii> vpii;
 typedef vector<pll> vpll;
 
-int fastinput(){int t=0;char c;c=getchar_unlocked();while(c<'0' || c>'9')c=getchar_unlocked();while(c>='0' && c<='9'){t=(t<<3)+(t<<1)+c-'0';c=getchar_unlocked();}return t;}
-ll glo;
-void display(vl v) {
-  REP(i, v.size()) cout<<v[i]<<' ';
-  cout<<endl;
-}
-
-ll f(vl v, ll p) {
-  // display(v);
-  // usleep(10000);
-  ll sum = 0;
-  bool break_ = false;
-  for(; p<v.size()-1 && !break_; p++) {
-    if(p+2 == v.size()) {v.pb(0); break_ = true; }
-    ll tmp = v[p], tmp_ = v[p+1], tmp__ = v[p+2];
-
-    ll T = min(v[p], v[p+1]);
-    while(T--) {
-      v[p]--; v[p+1]--; v[p+2]++;
-      sum = (sum%MOD + (1+f(v, p+1))%MOD )%MOD;
-    }
-    v[p] = tmp;
-    v[p+1] = tmp_;
-    v[p+2] = tmp__;
-  }
-
-  return sum;
-}
+//int fastinput(){int t=0;char c;c=getchar_unlocked();while(c<'0' || c>'9')c=getchar_unlocked();while(c>='0' && c<='9'){t=(t<<3)+(t<<1)+c-'0';c=getchar_unlocked();}return t;}
 
 int main(){
   ioS;
 
-  #ifndef ONLINE_JUDGE
-    freopen("in.txt", "r", stdin);
-  #endif
+  //  #ifndef ONLINE_JUDGE
+  //    freopen("in.txt", "r", stdin);
+  //  #endif
 
-  int t;
-  cin>>t;
-  while(t--) {
-    int n;
-    vl v;
+   int n, m;
+   cin>>n>>m;
 
-    cin>>n;
-    glo = n;
-    REP(i, n) {
-      int x;
-      cin>>x;
-      v.pb(x);
+   int steps[10004];
+   REP(i, 10004) steps[i] = -1;
+
+   queue<int> q;
+   q.push(n);
+   steps[n] = 0;
+
+   while(!q.empty()) {
+     int pos = q.front();
+     q.pop();
+    //  debug(pos);
+
+    if(pos == m) break;
+    if(2*pos <= 10000 && steps[2*pos] == -1) {
+      q.push(2*pos);
+      steps[2*pos] = steps[pos]+1;
     }
 
-    cout<<f(v, 0)+1<<endl;
-  }
+    if(pos-1 >= 0 && steps[pos-1] == -1) {
+      q.push(pos-1);
+      steps[pos-1] = steps[pos]+1;
+    }
+   }
+   cout<<steps[m];
+
 
   return 0;
 }

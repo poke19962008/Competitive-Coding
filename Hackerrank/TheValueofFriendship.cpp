@@ -9,8 +9,6 @@
 #include <queue>
 #include <list>
 #include <map>
-#include <set>
-#include <unistd.h>
 using namespace std;
 
 #define EPS 1e-9
@@ -42,32 +40,42 @@ typedef vector<pii> vpii;
 typedef vector<pll> vpll;
 
 int fastinput(){int t=0;char c;c=getchar_unlocked();while(c<'0' || c>'9')c=getchar_unlocked();while(c>='0' && c<='9'){t=(t<<3)+(t<<1)+c-'0';c=getchar_unlocked();}return t;}
-ll glo;
-void display(vl v) {
-  REP(i, v.size()) cout<<v[i]<<' ';
-  cout<<endl;
+
+
+int arr[MAXN];
+ll size[MAXN];
+
+void init(int n) {
+  REP(i, n) {
+    arr[i] = i;
+    size[i] = 1;
+  }
 }
 
-ll f(vl v, ll p) {
-  // display(v);
-  // usleep(10000);
-  ll sum = 0;
-  bool break_ = false;
-  for(; p<v.size()-1 && !break_; p++) {
-    if(p+2 == v.size()) {v.pb(0); break_ = true; }
-    ll tmp = v[p], tmp_ = v[p+1], tmp__ = v[p+2];
+int root(int x) {
+  int i = arr[x];
 
-    ll T = min(v[p], v[p+1]);
-    while(T--) {
-      v[p]--; v[p+1]--; v[p+2]++;
-      sum = (sum%MOD + (1+f(v, p+1))%MOD )%MOD;
-    }
-    v[p] = tmp;
-    v[p+1] = tmp_;
-    v[p+2] = tmp__;
+  while(i != arr[i]) {
+    i = arr[ arr[ arr[i] ] ];
   }
+  return i;
+}
 
-  return sum;
+void union_(int x, int y) {
+  x = root(x);
+  y = root(y);
+
+  if(x == y) return;
+
+  if(size[x] < size[y]) {
+    arr[x] = y;
+    size[y] += size[x];
+    // size[x] = size[y];
+  }else {
+    arr[y] = x;
+    size[x] += size[y];
+    // size[y] = size[x];
+  }
 }
 
 int main(){
@@ -78,20 +86,31 @@ int main(){
   #endif
 
   int t;
-  cin>>t;
+  t = fastinput();
   while(t--) {
-    int n;
-    vl v;
+    int n, m;
+    ll sum = 0;
+    n = fastinput();
+    m = fastinput();
 
-    cin>>n;
-    glo = n;
-    REP(i, n) {
-      int x;
-      cin>>x;
-      v.pb(x);
+    init(n);
+
+    while(m--) {
+      int x, y;
+      x = fastinput();
+      y = fastinput();
+
+      union_(--x, --y);
     }
 
-    cout<<f(v, 0)+1<<endl;
+
+    ll hash[MAXN] = {0};
+    REP(i, n) hash[i] = 0;
+
+    REP(i, n) hash[root(arr[i])]++;
+
+    cout<<sum<<endl;
+
   }
 
   return 0;

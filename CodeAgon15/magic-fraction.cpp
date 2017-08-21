@@ -44,12 +44,56 @@ typedef vector<pll> vpll;
 
 // int fastinput(){int t=0;char c;c=getchar_unlocked();while(c<'0' || c>'9')c=getchar_unlocked();while(c>='0' && c<='9'){t=(t<<3)+(t<<1)+c-'0';c=getchar_unlocked();}return t;}
 
+bool isPrime[501];
+void build() {
+  int n = 500;
+  REP(i, 501) isPrime[i] = true;
+  for(int i=2; i*i <= n; i++) {
+    if(isPrime[i])
+      for(int j=2*i; j<=n; j+=i)
+        if(j%i == 0) { isPrime[j] = false; }
+  }
+}
+
+ul choose(int n, int k) {
+    if (k > n) {
+        return 0;
+    }
+    ul r = 1;
+    for (ul d = 1; d <= k; ++d) {
+        r *= n--;
+        r /= d;
+    }
+    return r;
+}
+
 int main(){
   ioS;
 
-  // #ifndef ONLINE_JUDGE
-  //   freopen("in.txt", "r", stdin);
-  // #endif
+  #ifndef ONLINE_JUDGE
+    freopen("in.txt", "r", stdin);
+  #endif
+
+  build();
+  int n;
+  cin>>n;
+
+  if(n==1) {cout<<0<<endl; return 0; }
+  if(n==2) {cout<<1<<endl; return 0; }
+  if(n==3) {cout<<2<<endl; return 0; }
+
+  int factors = 0;
+  for(int i=2; i<=n ;i++) {
+    if(isPrime[i]){
+      bool consider = true;
+      for(int j=i+1; j<=n && consider; j++)
+        if(j%i == 0 ) consider =false;
+      if(consider) factors++;
+    }
+  }
+  ul sum =0;
+  FOR(i, 1, factors+1, 1) sum += choose(factors, i);
+  cout<<sum+1;
 
   return 0;
 }

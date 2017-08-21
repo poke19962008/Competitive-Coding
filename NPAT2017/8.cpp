@@ -1,6 +1,10 @@
-#include <algorithm>
 #include <iostream>
 #include <stdio.h>
+#include <stdlib.h>
+
+using namespace std;
+
+#include <algorithm>
 #include <math.h>
 #include <string>
 #include <vector>
@@ -9,7 +13,6 @@
 #include <list>
 #include <map>
 #include <set>
-using namespace std;
 
 #define EPS 1e-9
 #define INF 1e15+9
@@ -42,14 +45,48 @@ typedef pair<ll,ll> pll;
 typedef vector<pii> vpii;
 typedef vector<pll> vpll;
 
-// int fastinput(){int t=0;char c;c=getchar_unlocked();while(c<'0' || c>'9')c=getchar_unlocked();while(c>='0' && c<='9'){t=(t<<3)+(t<<1)+c-'0';c=getchar_unlocked();}return t;}
 
-int main(){
-  ioS;
+bool cmp(pii a, pii b) {
+  return a.second < b.second;
+}
+void mostFreq3(int *arr, int n, int b[3]) {
+  pii v[3];
+  v[0].first = -1; v[0].second = -1;
+  v[1].first = -1; v[1].second = -1;
+  v[2].first = -1; v[2].second = -1;
+  sort(arr, arr+n);
+  REP(i, n) {
+    int j=i+1, freq = 1;
+    while(j<n && arr[j] == arr[i]) { j++; freq++; }
 
-  // #ifndef ONLINE_JUDGE
-  //   freopen("in.txt", "r", stdin);
-  // #endif
+    if(v[0].second < freq) {
+      v[0].second = freq;
+      v[0].first = arr[i];
+    }
+    sort(v, v+3, cmp);
+    i = j-1;
+  }
 
-  return 0;
+  b[0] = v[2].first;
+  b[1] = v[1].first;
+  b[2] = v[0].first; 
+}
+
+int main()
+{
+	int n;
+	int a[100];
+	int b[3];
+	int i=0;
+
+	cin >> n;
+	for(i=0;i<n;i++){
+		cin >> a[i];
+	}
+
+	mostFreq3(a,n,b);
+        for(i=0; i<3; i++)
+            cout << b[i] << " ";
+
+	return 0;
 }

@@ -10,7 +10,6 @@
 #include <list>
 #include <map>
 #include <set>
-#include <unistd.h>
 using namespace std;
 
 #define EPS 1e-9
@@ -21,6 +20,9 @@ using namespace std;
 #define ioS ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
 #define debug(x) cout<<#x<<"="<<x<<"\n";
 #define debug_(x,y) cout<<#x<<"="<<x<<" and "<<#y<<"="<<y<<"\n";
+
+int max(int a, int b) { return ((a>b)?a:b); }
+int min(int a, int b) { return ((a<b)?a:b); }
 
 #define pb push_back
 #define mp make_pair
@@ -41,34 +43,7 @@ typedef pair<ll,ll> pll;
 typedef vector<pii> vpii;
 typedef vector<pll> vpll;
 
-int fastinput(){int t=0;char c;c=getchar_unlocked();while(c<'0' || c>'9')c=getchar_unlocked();while(c>='0' && c<='9'){t=(t<<3)+(t<<1)+c-'0';c=getchar_unlocked();}return t;}
-ll glo;
-void display(vl v) {
-  REP(i, v.size()) cout<<v[i]<<' ';
-  cout<<endl;
-}
-
-ll f(vl v, ll p) {
-  // display(v);
-  // usleep(10000);
-  ll sum = 0;
-  bool break_ = false;
-  for(; p<v.size()-1 && !break_; p++) {
-    if(p+2 == v.size()) {v.pb(0); break_ = true; }
-    ll tmp = v[p], tmp_ = v[p+1], tmp__ = v[p+2];
-
-    ll T = min(v[p], v[p+1]);
-    while(T--) {
-      v[p]--; v[p+1]--; v[p+2]++;
-      sum = (sum%MOD + (1+f(v, p+1))%MOD )%MOD;
-    }
-    v[p] = tmp;
-    v[p+1] = tmp_;
-    v[p+2] = tmp__;
-  }
-
-  return sum;
-}
+// int fastinput(){int t=0;char c;c=getchar_unlocked();while(c<'0' || c>'9')c=getchar_unlocked();while(c>='0' && c<='9'){t=(t<<3)+(t<<1)+c-'0';c=getchar_unlocked();}return t;}
 
 int main(){
   ioS;
@@ -77,22 +52,39 @@ int main(){
     freopen("in.txt", "r", stdin);
   #endif
 
-  int t;
-  cin>>t;
-  while(t--) {
-    int n;
-    vl v;
+  int n, k, group[MAXN];
+  cin>>n>>k;
 
-    cin>>n;
-    glo = n;
-    REP(i, n) {
-      int x;
-      cin>>x;
-      v.pb(x);
+  REP(i, k) cin>>group[i];
+
+  int gInd = 0;
+
+  REP(i, n) {
+    int seat = 1;
+    group[gInd]--; seat++;
+
+    if(group[gInd] == 0) {
+      gInd++; seat=3;
+      if(gInd >= k) {cout<<"YES"; return 0;}
+    }else {
+      group[gInd]--; seat = 3; if(group[gInd] == 0) gInd++;
+      if(gInd >= k) {cout<<"YES"; return 0;}
     }
 
-    cout<<f(v, 0)+1<<endl;
+    REP(j, 4) {
+      group[gInd]--; seat++;
+      if(group[gInd] == 0) { gInd++; break; }
+      if(gInd >= k) {cout<<"YES"; return 0;}
+      if(seat == 7) break;
+    }
+
+    group[gInd]--;
+    if(group[gInd] == 0) { gInd++; if(gInd >= k) {cout<<"YES"; return 0;} continue; }
+    group[gInd]--;
   }
+
+  if(gInd >= k) {cout<<"YES"; return 0;}
+  cout<<"NO";
 
   return 0;
 }
