@@ -51,20 +51,16 @@ int main(){
     freopen("in.txt", "r", stdin);
   #endif
 
-  int q;
-  cin>>q;
-  while(q--) {
-    int n, k, x;
-    float fee = 0.0, d;
+  int t;
+  cin>>t;
 
-    cin>>n>>k>>x>>d;
-    REP(i, n) {
-      int amt; cin>>amt;
-      fee += max(k*1.0,  (float) x*amt*0.01 );
-    }
-    // debug_(fee, d);
-    if(fee-d > EPS) cout<<"upfront\n";
-    else cout<<"fee\n";
+  while(t--) {
+    int n, v1, v2;
+    cin>>n>>v1>>v2;
+
+    if(2*v1*v1 < 2*v2*v2) cout<<"Elevator\n";
+    else cout<<"Stairs\n";
+
   }
 
   return 0;

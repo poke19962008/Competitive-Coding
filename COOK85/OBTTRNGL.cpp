@@ -51,20 +51,20 @@ int main(){
     freopen("in.txt", "r", stdin);
   #endif
 
-  int q;
-  cin>>q;
-  while(q--) {
-    int n, k, x;
-    float fee = 0.0, d;
+  int t;
+  cin>>t;
 
-    cin>>n>>k>>x>>d;
-    REP(i, n) {
-      int amt; cin>>amt;
-      fee += max(k*1.0,  (float) x*amt*0.01 );
-    }
-    // debug_(fee, d);
-    if(fee-d > EPS) cout<<"upfront\n";
-    else cout<<"fee\n";
+  while(t--) {
+    ll k, a, b;
+    cin>>k>>a>>b;
+
+    if(b<a) swap(a, b);
+
+    if( 1LL*(b-a)*2 == k ) {
+        cout<<0<<endl;
+    }else cout<<min( b-a-1, k-b+a-1)<<endl;
+
+
   }
 
   return 0;
