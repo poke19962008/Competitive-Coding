@@ -79,6 +79,5 @@ int main(){
   REP(i, n) REP(j, n) cin>>a[i][j];
 
   cout<<g(s, m, x);
-
   return 0;
 }
