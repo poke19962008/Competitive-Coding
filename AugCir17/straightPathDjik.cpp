@@ -44,24 +44,9 @@ typedef vector<pll> vpll;
 
 // int fastinput(){int t=0;char c;c=getchar_unlocked();while(c<'0' || c>'9')c=getchar_unlocked();while(c>='0' && c<='9'){t=(t<<3)+(t<<1)+c-'0';c=getchar_unlocked();}return t;}
 
-bool checkSum(int a,int b) {
-  int sum1=0, sum2=0;
-  REP(i, 3) {
-    sum1 += a%10; a/=10;
-    sum2 += b%10; b/=10;
-  }
-  return sum1 == sum2;
+ll encode(int i, int j) {
+  return (i+j)*(i+j+1)/2 + j;
 }
-
-int edits(int source, int target) {
-  int ans = 0;
-  REP(i, 3) {
-    ans += (source%10 != target%10);
-    source /= 10; target /= 10;
-  }
-  return ans;
-}
-
 
 int main(){
   ioS;
@@ -70,17 +55,22 @@ int main(){
     freopen("in.txt", "r", stdin);
   #endif
 
-  int n;
-  cin>>n;
-  int a = n/1000;
-  int b = n%1000;
+  char grid[1003][1003];
+  int row, col;
+  int adj[MAXN][MAXN];
+  pii start, end;
 
-  int ans = 7;
-  REP(i, 1000)
-    REP(j, 1000)
-      if(checkSum(i, j)) ans = min(edits(a,i)+edits(b,j), ans);
+  cin>>row>>col;
+  REP(i, row) REP(j, col) cin>>grid[i][j];
 
-  cout<<ans;
+  REP(i, row) {
+    REP(j, col) {
+      if(grid[i][j] == 'V') start = mp(i, j);
+      else if(grid[i][j] == 'H') end = mp(i, j);
+
+      
+    }
+  }
 
   return 0;
 }

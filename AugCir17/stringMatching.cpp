@@ -44,24 +44,6 @@ typedef vector<pll> vpll;
 
 // int fastinput(){int t=0;char c;c=getchar_unlocked();while(c<'0' || c>'9')c=getchar_unlocked();while(c>='0' && c<='9'){t=(t<<3)+(t<<1)+c-'0';c=getchar_unlocked();}return t;}
 
-bool checkSum(int a,int b) {
-  int sum1=0, sum2=0;
-  REP(i, 3) {
-    sum1 += a%10; a/=10;
-    sum2 += b%10; b/=10;
-  }
-  return sum1 == sum2;
-}
-
-int edits(int source, int target) {
-  int ans = 0;
-  REP(i, 3) {
-    ans += (source%10 != target%10);
-    source /= 10; target /= 10;
-  }
-  return ans;
-}
-
 
 int main(){
   ioS;
@@ -69,18 +51,48 @@ int main(){
   #ifndef ONLINE_JUDGE
     freopen("in.txt", "r", stdin);
   #endif
-
+  string str;
   int n;
+  set<int> st;
+
+  cin>>str;
   cin>>n;
-  int a = n/1000;
-  int b = n%1000;
+  REP(i, n) {
+    int x; cin>>x;
+    st.insert(x);
+  }
 
-  int ans = 7;
-  REP(i, 1000)
-    REP(j, 1000)
-      if(checkSum(i, j)) ans = min(edits(a,i)+edits(b,j), ans);
+  vpii inter;
 
+  set<int> visited;
+  bool check = true;
+  int left=0, right=0, count=0;
+  REP(i, str.size()) {
+      if(st.count(str[i]-'0') && !visited.count(str[i]-'0')){
+        count ++;
+        visited.insert(str[i]-'0');
+      }
+
+      if(check && count==1) {left = i; check=false;}
+      if(count == n) {
+        right = i;
+        inter.pb(mp(left, right));
+        count = 0; check=true;
+        visited.clear();
+      }
+      // debug_(str[i], left);
+  }
+
+  ll ans = 0;
+  REP(i, inter.size()) {
+    left = inter[i].first;
+    if(i+1 != inter.size()) right = inter[i+1].first-inter[i].second-1;
+    else right = str.size()-1-inter[i].second;
+
+    ans += (1+left+right+left*right);
+    debug_(inter[i].first, inter[i].second);
+    // debug_(left, right);
+  }
   cout<<ans;
-
   return 0;
 }

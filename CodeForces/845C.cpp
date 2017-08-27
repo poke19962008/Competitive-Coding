@@ -44,24 +44,9 @@ typedef vector<pll> vpll;
 
 // int fastinput(){int t=0;char c;c=getchar_unlocked();while(c<'0' || c>'9')c=getchar_unlocked();while(c>='0' && c<='9'){t=(t<<3)+(t<<1)+c-'0';c=getchar_unlocked();}return t;}
 
-bool checkSum(int a,int b) {
-  int sum1=0, sum2=0;
-  REP(i, 3) {
-    sum1 += a%10; a/=10;
-    sum2 += b%10; b/=10;
-  }
-  return sum1 == sum2;
+bool cmp(pii a, pii b) {
+  return a<b;
 }
-
-int edits(int source, int target) {
-  int ans = 0;
-  REP(i, 3) {
-    ans += (source%10 != target%10);
-    source /= 10; target /= 10;
-  }
-  return ans;
-}
-
 
 int main(){
   ioS;
@@ -71,16 +56,24 @@ int main(){
   #endif
 
   int n;
+  vpii v;
   cin>>n;
-  int a = n/1000;
-  int b = n%1000;
+  REP(i, n) {
+    int a, b; cin>>a>>b;
+    v.pb(mp(a, 1));
+    v.pb(mp(b+1, -1));
+  }
 
-  int ans = 7;
-  REP(i, 1000)
-    REP(j, 1000)
-      if(checkSum(i, j)) ans = min(edits(a,i)+edits(b,j), ans);
+  sort(v.begin(), v.end(), cmp);
 
-  cout<<ans;
+  int cur = 0;
+  REP(i, v.size()) {
+    // debug_(v[i].first, v[i].second);
+    if(v[i].second == 1) cur ++;
+    else cur--;
+    if(cur >= 3) {cout<<"NO"; return 0; }
+  }
+  cout<<"YES";
 
   return 0;
 }

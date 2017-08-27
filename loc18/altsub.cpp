@@ -43,25 +43,13 @@ typedef vector<pii> vpii;
 typedef vector<pll> vpll;
 
 // int fastinput(){int t=0;char c;c=getchar_unlocked();while(c<'0' || c>'9')c=getchar_unlocked();while(c>='0' && c<='9'){t=(t<<3)+(t<<1)+c-'0';c=getchar_unlocked();}return t;}
+int arr[100005];
+int tree[MAXN];
+int n, m;
 
-bool checkSum(int a,int b) {
-  int sum1=0, sum2=0;
-  REP(i, 3) {
-    sum1 += a%10; a/=10;
-    sum2 += b%10; b/=10;
-  }
-  return sum1 == sum2;
+void build(int node, int start, int end) {
+  
 }
-
-int edits(int source, int target) {
-  int ans = 0;
-  REP(i, 3) {
-    ans += (source%10 != target%10);
-    source /= 10; target /= 10;
-  }
-  return ans;
-}
-
 
 int main(){
   ioS;
@@ -70,17 +58,27 @@ int main(){
     freopen("in.txt", "r", stdin);
   #endif
 
-  int n;
-  cin>>n;
-  int a = n/1000;
-  int b = n%1000;
+  cin>>n>>m;
+  REP(i, n) cin>>arr[i];
 
-  int ans = 7;
-  REP(i, 1000)
-    REP(j, 1000)
-      if(checkSum(i, j)) ans = min(edits(a,i)+edits(b,j), ans);
+  build(1, 0, n-1);
 
-  cout<<ans;
+  while(m--) {
+    int opt;
+    cin>>opt;
+
+    if(opt == 1) {
+      int i, b;
+      cin>>i>>b;
+
+
+    }else {
+      int l, r;
+      cin>>l>>r;
+
+
+    }
+  }
 
   return 0;
 }
